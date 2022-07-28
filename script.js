@@ -32,8 +32,7 @@ function operate(num1, num2, callback) {
 
 function equal() {
   num2 = calculate();
-  console.log(operate(num, num2, operator));
-  return display();
+  total = console.log(operate(num, num2, operator));
 }
 
 const equalButton = document.querySelector(".equal");
@@ -51,24 +50,32 @@ const plus = document.querySelector(".add");
 let addFunction = plus.addEventListener("click", sum);
 
 const minus = document.querySelector(".subtract");
-let subtractFunction = minus.addEventListener(
-  "click",
-  () => (operator = subtract)
-);
-
+let subtractFunction = minus.addEventListener("click", subtract_);
 const multi = document.querySelector(".multiply");
-let muliplyFunction = multi.addEventListener(
-  "click",
-  () => (operator = multiply)
-);
+let muliplyFunction = multi.addEventListener("click", multiply_);
 
 const divi = document.querySelector(".divide");
-let divideFunction = divi.addEventListener("click", () => (operator = divide));
+let divideFunction = divi.addEventListener("click", divide_);
 
 let num = 0;
 
 function sum() {
   operator = add;
+  num = calculate();
+  numArray = [];
+}
+function subtract_() {
+  operator = subtract;
+  num = calculate();
+  numArray = [];
+}
+function multiply_() {
+  operator = multiply;
+  num = calculate();
+  numArray = [];
+}
+function divide_() {
+  operator = divide;
   num = calculate();
   numArray = [];
 }
@@ -87,7 +94,11 @@ function calculate() {
 }
 
 function display() {
-  number.textContent = calculate();
+  if (total > 0) {
+    number.textContent = total;
+  } else {
+    number.textContent = calculate();
+  }
   number.classList.add("display");
   container.prepend(number);
 }
@@ -105,48 +116,45 @@ function one() {
 }
 
 function two() {
-  if (num == 0) {
-    num = 2;
-    return display(num);
-  } else {
-    num2 = 2;
-    return display(num2);
-  }
+  numArray.push("2");
+  display();
 }
 
 function three() {
-  num = 3;
-  return display();
+  numArray.push("3");
+  display();
 }
 function four() {
-  num = 4;
-  return display();
+  numArray.push("4");
+  display();
 }
 function five() {
-  num = 5;
-  return display();
+  numArray.push("5");
+  display();
 }
 function six() {
-  num = 6;
-  return display();
+  numArray.push("6");
+  display();
 }
 function seven() {
-  num = 7;
-  return display();
+  numArray.push("7");
+  display();
 }
 function eight() {
-  num = 8;
-  return display();
+  numArray.push("8");
+  display();
 }
 function nine() {
-  num = 9;
-  return display();
+  numArray.push("9");
+  display();
 }
 
 function clear() {
+  total = 0;
   num = 0;
   num2 = 0;
-  return display();
+  numArray = [];
+  display();
 }
 
 const zeroButton = document.querySelector(".zero");
