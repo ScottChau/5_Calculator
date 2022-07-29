@@ -31,8 +31,13 @@ function operate(num1, num2, callback) {
 }
 
 function equal() {
-  num2 = calculate();
-  total = console.log(operate(num, num2, operator));
+  if (total == 0) {
+    num2 = calculate();
+    total = operate(num, num2, operator);
+  } else {
+    num2 = calculate();
+    return console.log(operate(total, num2, operator));
+  }
 }
 
 const equalButton = document.querySelector(".equal");
@@ -51,6 +56,7 @@ let addFunction = plus.addEventListener("click", sum);
 
 const minus = document.querySelector(".subtract");
 let subtractFunction = minus.addEventListener("click", subtract_);
+
 const multi = document.querySelector(".multiply");
 let muliplyFunction = multi.addEventListener("click", multiply_);
 
@@ -90,11 +96,11 @@ function calculate() {
   if (n == "") {
     return 0;
   }
-  return parseInt(n);
+  return parseFloat(n);
 }
 
 function display() {
-  if (total > 0) {
+  if (total > 0 || total < 0) {
     number.textContent = total;
   } else {
     number.textContent = calculate();
@@ -149,6 +155,11 @@ function nine() {
   display();
 }
 
+function dot() {
+  numArray.push(".");
+  display();
+}
+
 function clear() {
   total = 0;
   num = 0;
@@ -189,3 +200,6 @@ nineButton.addEventListener("click", nine);
 
 const clearButton = document.querySelector(".clear");
 clearButton.addEventListener("click", clear);
+
+const dotButton = document.querySelector(".dot");
+dotButton.addEventListener("click", dot);
