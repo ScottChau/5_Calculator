@@ -92,12 +92,9 @@ function add_() {
     previousDisplay(`${arrToNum()} + `);
     nowDisplay(`${total}`);
   }
-  console.log(num1);
-  console.log(total);
-  console.log(num2);
+
   num2 = 0;
   numArray = [];
-  console.log(numArray);
 }
 const addButton = document.querySelector(".add");
 addButton.addEventListener("click", add_);
@@ -159,7 +156,10 @@ subtractButton.addEventListener("click", subtract_);
 function multiply_() {
   num2 = arrToNum();
   // prevent total * 0
-  if (num2 == 0 && total != 0 && operator === multiply) {
+  if (
+    (num2 == 0 && total != 0 && operator === multiply) ||
+    operator === divide
+  ) {
     num2 = 1;
   }
   // checking if there is any previous operator
@@ -175,12 +175,12 @@ function multiply_() {
     operator = multiply;
     return total;
   } else if (operator === subtract || operator === divide || operator === add) {
-    console.log(total);
     total = operate(total, num2, operator);
     previousDisplay(`${total} X `);
     nowDisplay(`${total}`);
     numArray = [];
     operator = multiply;
+
     return total;
   }
   //
@@ -201,67 +201,72 @@ function multiply_() {
     previousDisplay(`${arrToNum()} X `);
     nowDisplay(`${total}`);
   }
-  console.log(num1);
-  console.log(total);
-  console.log(num2);
+
   numArray = [];
-  console.log(numArray);
 }
 
 const multiplyButton = document.querySelector(".multiply");
 multiplyButton.addEventListener("click", multiply_);
 
 function divide_() {
+  num2 = arrToNum();
+
+  // prevent total / 0
+  if (
+    (num2 == 0 && total != 0 && operator === multiply) ||
+    operator === divide
+  ) {
+    num2 = 1;
+  }
   // checking if there is any previous operator
   if (
-    (operator == add && total != 0) ||
-    (operator == multiply && total != 0) ||
-    (operator == subtract && total != 0)
+    (operator === subtract && total === "") ||
+    (operator === multiply && total === "") ||
+    (operator === add && total === "")
   ) {
-    num2 = arrToNum();
-    total = operate(total, num2, operator);
-    previousDisplay(`${total} ÷ `);
-    nowDisplay(`${total}`);
-    numArray = [];
-    operator = divide;
-    return total;
-  } else if (
-    (operator == add && total == 0) ||
-    (operator == multiply && total == 0) ||
-    (operator == subtract && total == 0)
-  ) {
-    num2 = arrToNum();
     total = operate(num1, num2, operator);
     previousDisplay(`${total} ÷ `);
     nowDisplay(`${total}`);
     numArray = [];
     operator = divide;
-    return total;
+  } else if (
+    operator === subtract ||
+    operator === multiply ||
+    operator === add
+  ) {
+    total = operate(total, num2, operator);
+    previousDisplay(`${total} ÷ `);
+    nowDisplay(`${total}`);
+    numArray = [];
+    operator = divide;
   }
   //
   operator = divide;
-
-  if (num1 == 0) {
+  if (num1 === 0) {
     num1 = arrToNum();
-  } else if (total != 0) {
-    num2 = arrToNum();
-    total = operate(total, num2, divide);
-    console.log(total);
-    num2 = 0;
+    console.log(num1);
+  } else if (total === "") {
+    total = operate(num1, num2, operator);
   } else {
-    num2 = arrToNum();
-    total = operate(num1, num2, divide);
-    console.log(total);
+    total = operate(total, num2, operator);
   }
-  if (total > 0) {
+  if (typeof total === "number") {
     previousDisplay(`${total} ÷`);
-    nowDisplay(`${total}`);
-  } else if (total < 0) {
-    previousDisplay(`${total}`);
     nowDisplay(`${total}`);
   } else {
     previousDisplay(`${arrToNum()} ÷ `);
+    nowDisplay(`${total}`);
   }
+
+  // catching divide by 0
+  if (total === Infinity || isNaN(total)) {
+    alert("Do not divide by 0, Please input again");
+    return clear();
+  }
+
+  console.log(total);
+  console.log(numArray);
+
   numArray = [];
 }
 
@@ -270,6 +275,7 @@ divideButton.addEventListener("click", divide_);
 
 function arrToNum() {
   let n = 0;
+
   console.log(numArray);
   for (let i = 0; i < numArray.length; i++) {
     n += numArray[i];
@@ -325,16 +331,6 @@ function dot() {
   nowDisplay(arrToNum());
 }
 
-function clear() {
-  num1 = 0;
-  num2 = 0;
-  total = "";
-  numArray = [];
-  operator = "";
-  previousScreen.textContent = "";
-  nowScreen.textContent = 0;
-}
-
 const zeroButton = document.querySelector(".zero");
 zeroButton.addEventListener("click", zero);
 
@@ -374,15 +370,48 @@ dotButton.addEventListener("click", dot);
 const equalButton = document.querySelector(".equal");
 equalButton.addEventListener("click", equal);
 
+const deleteButton = document.querySelector(".delete");
+deleteButton.addEventListener("click", delete_);
+
 function equal() {
   num2 = arrToNum();
+
   if (total === "") {
     total = operate(num1, num2, operator);
   } else {
     total = operate(total, num2, operator);
   }
   numArray = [];
-  console.log(total);
-  previousDisplay(`${total}`);
+  if (operator === add) {
+    previousDisplay(`${total} + `);
+  }
+  if (operator === subtract) {
+    previousDisplay(`${total} - `);
+  }
+  if (operator === multiply) {
+    previousDisplay(`${total} X `);
+  }
+  if (operator === divide) {
+    previousDisplay(`${total} ÷ `);
+  }
+  if (total === Infinity || isNaN(total)) {
+    alert("Do not divide by 0, Please input again");
+    return clear();
+  }
   nowDisplay(`${total}`);
+}
+
+function clear() {
+  num1 = 0;
+  num2 = 0;
+  total = "";
+  numArray = [];
+  operator = "";
+  previousScreen.textContent = "";
+  nowScreen.textContent = 0;
+}
+
+function delete_() {
+  numArray.pop();
+  nowDisplay(arrToNum());
 }
