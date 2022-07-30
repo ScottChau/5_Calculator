@@ -41,13 +41,20 @@ function nowDisplay(num) {
 nowDisplay(0);
 
 function add_() {
+  num2 = arrToNum();
+  if (
+    (num2 === 0 && operator == divide) ||
+    (num2 === 0 && operator == multiply)
+  ) {
+    num2 = 1;
+  }
   // checking if there is any previous operator
+
   if (
     (operator === subtract && total === "") ||
     (operator === divide && total === "") ||
     (operator === multiply && total === "")
   ) {
-    num2 = arrToNum();
     total = operate(num1, num2, operator);
     previousDisplay(`${total} + `);
     nowDisplay(`${total}`);
@@ -59,7 +66,6 @@ function add_() {
     operator === divide ||
     operator === multiply
   ) {
-    num2 = arrToNum();
     console.log(total);
     total = operate(total, num2, operator);
     previousDisplay(`${total} + `);
@@ -74,11 +80,9 @@ function add_() {
     num1 = arrToNum();
     console.log(num1);
   } else if (total === "") {
-    num2 = arrToNum();
     total = operate(num1, num2, operator);
     console.log(total);
   } else {
-    num2 = arrToNum();
     total = operate(total, num2, operator);
   }
   if (typeof total === "number") {
@@ -100,12 +104,18 @@ addButton.addEventListener("click", add_);
 
 function subtract_() {
   // checking if there is any previous operator
+  num2 = arrToNum();
+  if (
+    (num2 === 0 && operator == divide) ||
+    (num2 === 0 && operator == multiply)
+  ) {
+    num2 = 1;
+  }
   if (
     (operator == add && total === "") ||
     (operator == divide && total === "") ||
     (operator == multiply && total === "")
   ) {
-    num2 = arrToNum();
     total = operate(num1, num2, operator);
     previousDisplay(`${total} - `);
     nowDisplay(`${total}`);
@@ -113,7 +123,6 @@ function subtract_() {
     operator = subtract;
     return total;
   } else if (operator === add || operator === divide || operator === multiply) {
-    num2 = arrToNum();
     console.log(total);
     total = operate(total, num2, operator);
     previousDisplay(`${total} - `);
@@ -128,11 +137,9 @@ function subtract_() {
     num1 = arrToNum();
     console.log(num1);
   } else if (total === "") {
-    num2 = arrToNum();
     total = operate(num1, num2, operator);
     console.log(total);
   } else {
-    num2 = arrToNum();
     total = operate(total, num2, operator);
   }
   if (typeof total === "number") {
@@ -142,7 +149,7 @@ function subtract_() {
     nowDisplay(`${total}`);
     previousDisplay(`${arrToNum()} - `);
   }
-  num2 = 0;
+
   numArray = [];
 }
 
@@ -150,27 +157,27 @@ const subtractButton = document.querySelector(".subtract");
 subtractButton.addEventListener("click", subtract_);
 
 function multiply_() {
-  // check if there is any previous operator
+  num2 = arrToNum();
+  // prevent total * 0
+  if (num2 == 0 && total != 0 && operator === multiply) {
+    num2 = 1;
+  }
+  // checking if there is any previous operator
   if (
-    (operator == add && total != 0) ||
-    (operator == divide && total != 0) ||
-    (operator == subtract && total != 0)
+    (operator === subtract && total === "") ||
+    (operator === divide && total === "") ||
+    (operator === add && total === "")
   ) {
-    num2 = arrToNum();
-    total = operate(total, num2, operator);
-    previousDisplay(`${total} x `);
+    total = operate(num1, num2, operator);
+    previousDisplay(`${total} X `);
     nowDisplay(`${total}`);
     numArray = [];
     operator = multiply;
     return total;
-  } else if (
-    (operator == add && total == 0) ||
-    (operator == divide && total == 0) ||
-    (operator == subtract && total == 0)
-  ) {
-    num2 = arrToNum();
-    total = operate(num1, num2, operator);
-    previousDisplay(`${total} x `);
+  } else if (operator === subtract || operator === divide || operator === add) {
+    console.log(total);
+    total = operate(total, num2, operator);
+    previousDisplay(`${total} X `);
     nowDisplay(`${total}`);
     numArray = [];
     operator = multiply;
@@ -178,28 +185,27 @@ function multiply_() {
   }
   //
   operator = multiply;
-
-  if (num1 == 0) {
+  if (num1 === 0) {
     num1 = arrToNum();
-  } else if (total != 0) {
-    num2 = arrToNum();
-    total = operate(total, num2, multiply);
+    console.log(num1);
+  } else if (total === "") {
+    total = operate(num1, num2, operator);
     console.log(total);
   } else {
-    num2 = arrToNum();
-    total = operate(num1, num2, multiply);
-    console.log(total);
+    total = operate(total, num2, operator);
   }
-  if (total > 0) {
-    previousDisplay(`${total} x`);
-    nowDisplay(`${total}`);
-  } else if (total < 0) {
-    previousDisplay(`${total}`);
+  if (typeof total === "number") {
+    previousDisplay(`${total} X`);
     nowDisplay(`${total}`);
   } else {
-    previousDisplay(`${arrToNum()} x `);
+    previousDisplay(`${arrToNum()} X `);
+    nowDisplay(`${total}`);
   }
+  console.log(num1);
+  console.log(total);
+  console.log(num2);
   numArray = [];
+  console.log(numArray);
 }
 
 const multiplyButton = document.querySelector(".multiply");
@@ -264,7 +270,6 @@ divideButton.addEventListener("click", divide_);
 
 function arrToNum() {
   let n = 0;
-
   console.log(numArray);
   for (let i = 0; i < numArray.length; i++) {
     n += numArray[i];
@@ -325,7 +330,7 @@ function clear() {
   num2 = 0;
   total = "";
   numArray = [];
-  operator = null;
+  operator = "";
   previousScreen.textContent = "";
   nowScreen.textContent = 0;
 }
@@ -370,11 +375,10 @@ const equalButton = document.querySelector(".equal");
 equalButton.addEventListener("click", equal);
 
 function equal() {
-  if (total == 0) {
-    num2 = arrToNum();
+  num2 = arrToNum();
+  if (total === "") {
     total = operate(num1, num2, operator);
   } else {
-    num2 = arrToNum();
     total = operate(total, num2, operator);
   }
   numArray = [];
