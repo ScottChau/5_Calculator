@@ -1,28 +1,28 @@
+let num1 = 0;
 let num2 = 0;
 let total = 0;
-let operator = "";
+let operator = null;
+let numArray = [];
+previousScreen = document.querySelector(".previous");
+nowScreen = document.querySelector(".now");
 
 function add(num1, num2) {
   total = num1 + num2;
-  display(total);
   return total;
 }
 
 function subtract(num1, num2) {
   total = num1 - num2;
-  display(total);
   return total;
 }
 
 function multiply(num1, num2) {
   total = num1 * num2;
-  display(total);
   return total;
 }
 
 function divide(num1, num2) {
   total = num1 / num2;
-  display(total);
   return total;
 }
 
@@ -30,134 +30,185 @@ function operate(num1, num2, callback) {
   return callback(num1, num2);
 }
 
-function equal() {
-  if (total == 0) {
-    num2 = calculate();
-    total = operate(num, num2, operator);
-  } else {
-    num2 = calculate();
-    return console.log(operate(total, num2, operator));
+function previousDisplay(num) {
+  previousScreen.textContent = num;
+}
+
+function nowDisplay(num) {
+  nowScreen.textContent = num;
+}
+
+nowDisplay(0);
+
+function add_() {
+  if (
+    (operator == subtract && total != 0) ||
+    (operator == divide && total != 0) ||
+    (operator == multiply && total != 0)
+  ) {
+    num2 = arrToNum();
+    total = operate(total, num2, operator);
+    previousDisplay(`${total} + `);
+    nowDisplay(`${total}`);
+    numArray = [];
+    operator = add;
+    return total;
+  } else if (
+    (operator == subtract && total == 0) ||
+    (operator == divide && total == 0) ||
+    (operator == multiply && total == 0)
+  ) {
+    num2 = arrToNum();
+    total = operate(num1, num2, operator);
+    previousDisplay(`${total} + `);
+    nowDisplay(`${total}`);
+    numArray = [];
+    operator = add;
+    return total;
   }
+  //
+  operator = add;
+  if (num1 == 0) {
+    num1 = arrToNum();
+  } else if (total != 0) {
+    num2 = arrToNum();
+    total = operate(total, num2, operator);
+    console.log(total);
+    num2 = 0;
+  } else {
+    num2 = arrToNum();
+    total = operate(num1, num2, operator);
+    console.log(total);
+  }
+  if (total > 0) {
+    previousDisplay(`${total} +`);
+  } else {
+    previousDisplay(`${arrToNum()} + `);
+  }
+  numArray = [];
+}
+const addButton = document.querySelector(".add");
+addButton.addEventListener("click", add_);
+
+function subtract_() {
+  if (
+    (operator == add && total != 0) ||
+    (operator == divide && total != 0) ||
+    (operator == multiply && total != 0)
+  ) {
+    num2 = arrToNum();
+    total = operate(total, num2, operator);
+    previousDisplay(`${total} - `);
+    nowDisplay(`${total}`);
+    numArray = [];
+    operator = subtract;
+    return total;
+  } else if (
+    (operator == add && total == 0) ||
+    (operator == divide && total == 0) ||
+    (operator == multiply && total == 0)
+  ) {
+    num2 = arrToNum();
+    total = operate(num1, num2, operator);
+    previousDisplay(`${total} - `);
+    nowDisplay(`${total}`);
+    numArray = [];
+    operator = subtract;
+    return total;
+  }
+  //
+  operator = subtract;
+
+  if (num1 == 0) {
+    num1 = arrToNum();
+  } else if (total != 0) {
+    num2 = arrToNum();
+    total = operate(total, num2, subtract);
+    console.log(total);
+    num2 = 0;
+  } else {
+    num2 = arrToNum();
+    total = operate(num1, num2, subtract);
+    console.log(total);
+  }
+  if (total > 0) {
+    previousDisplay(`${total} -`);
+    nowDisplay(`${total}`);
+  } else if (total < 0) {
+    previousDisplay(`${total}`);
+    nowDisplay(`${total}`);
+  } else {
+    previousDisplay(`${arrToNum()} - `);
+  }
+  numArray = [];
+}
+
+const subtractButton = document.querySelector(".subtract");
+subtractButton.addEventListener("click", subtract_);
+
+function arrToNum() {
+  let n = 0;
+
+  console.log(numArray);
+  for (let i = 0; i < numArray.length; i++) {
+    n += numArray[i];
+  }
+
+  return parseFloat(n);
 }
 
 const equalButton = document.querySelector(".equal");
 equalButton.addEventListener("click", equal);
 
-// console.log(operate(3, 3, divide));
-
-const container = document.querySelector("#container");
-const ac = document.querySelector(".ac");
-
-const number = document.createElement("p");
-
-// +-*/ button
-const plus = document.querySelector(".add");
-let addFunction = plus.addEventListener("click", sum);
-
-const minus = document.querySelector(".subtract");
-let subtractFunction = minus.addEventListener("click", subtract_);
-
-const multi = document.querySelector(".multiply");
-let muliplyFunction = multi.addEventListener("click", multiply_);
-
-const divi = document.querySelector(".divide");
-let divideFunction = divi.addEventListener("click", divide_);
-
-let num = 0;
-
-function sum() {
-  operator = add;
-  num = calculate();
-  numArray = [];
+function equal() {
+  console.log(arrToString());
 }
-function subtract_() {
-  operator = subtract;
-  num = calculate();
-  numArray = [];
-}
-function multiply_() {
-  operator = multiply;
-  num = calculate();
-  numArray = [];
-}
-function divide_() {
-  operator = divide;
-  num = calculate();
-  numArray = [];
-}
-
-let numArray = [];
-
-function calculate() {
-  let n = "";
-  for (let i = 0; i < numArray.length; i++) {
-    n += numArray[i];
-  }
-  if (n == "") {
-    return 0;
-  }
-  return parseFloat(n);
-}
-
-function display() {
-  if (total > 0 || total < 0) {
-    number.textContent = total;
-  } else {
-    number.textContent = calculate();
-  }
-  number.classList.add("display");
-  container.prepend(number);
-}
-display();
-
-// Button for one to nine and reset
 
 function zero() {
   numArray.push("0");
-  display();
+  nowDisplay(arrToNum());
 }
 function one() {
   numArray.push("1");
-  display();
+  nowDisplay(arrToNum());
 }
 
 function two() {
   numArray.push("2");
-  display();
+  nowDisplay(arrToNum());
 }
 
 function three() {
   numArray.push("3");
-  display();
+  nowDisplay(arrToNum());
 }
 function four() {
   numArray.push("4");
-  display();
+  nowDisplay(arrToNum());
 }
 function five() {
   numArray.push("5");
-  display();
+  nowDisplay(arrToNum());
 }
 function six() {
   numArray.push("6");
-  display();
+  nowDisplay(arrToNum());
 }
 function seven() {
   numArray.push("7");
-  display();
+  nowDisplay(arrToNum());
 }
 function eight() {
   numArray.push("8");
-  display();
+  nowDisplay(arrToNum());
 }
 function nine() {
   numArray.push("9");
-  display();
+  nowDisplay(arrToNum());
 }
-
 function dot() {
   numArray.push(".");
-  display();
+  nowDisplay(arrToNum());
 }
 
 function clear() {
@@ -165,7 +216,7 @@ function clear() {
   num = 0;
   num2 = 0;
   numArray = [];
-  display();
+  operator = "";
 }
 
 const zeroButton = document.querySelector(".zero");
@@ -203,3 +254,13 @@ clearButton.addEventListener("click", clear);
 
 const dotButton = document.querySelector(".dot");
 dotButton.addEventListener("click", dot);
+
+function clear() {
+  num1 = 0;
+  num2 = 0;
+  total = 0;
+  numArray = [];
+  operator = "";
+  previousScreen.textContent = "";
+  nowScreen.textContent = 0;
+}

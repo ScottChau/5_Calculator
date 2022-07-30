@@ -1,16 +1,30 @@
 #container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin: 2em 20rem;
+  margin: 2em 15rem;
+  gap: 10px;
 }
 
-.zero {
-  grid-column: span 2;
-}
-
-.display {
-  display: flex;
-  margin: 0;
+.output {
   grid-column: span 4;
+}
+
+.delete {
+  grid-column: span 2;
+  margin-bottom: 20px;
+}
+
+.clear {
+  grid-column: span 2;
+  margin-bottom: 20px;
+}
+
+.now {
+  display: flex;
+  justify-content: end;
+}
+
+.previous {
+  display: flex;
   justify-content: end;
 }
