@@ -1,12 +1,66 @@
+/* setting up the variable */
+:root {
+  --background: #f6f6f6;
+  --font: #222;
+  --border: #333;
+  --screen: #eee;
+  --calculator: #aaa;
+  --btn: #eee;
+  --btn-hover: #ddd;
+  --btn-active: #ccc;
+  --btn-red: #faa;
+  --btn-red-hover: #e99;
+  --btn-red-active: #d88;
+  --btn-blue: #aaf;
+  --btn-blue-hover: #99e;
+  --btn-blue-active: #88d;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--font);
+  font-family: "Roboto", sans-serif;
+  line-height: 1.5;
+}
+
+button {
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  outline: none;
+}
+h1 {
+  text-align: center;
+}
+
 #container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin: 2em 15rem;
-  gap: 10px;
+  width: 400px;
+  border: 2px var(--border) solid;
+  border-radius: 15px;
+  padding: 20px;
+  background-color: var(--calculator);
+  margin: 50px auto;
 }
 
 .output {
   grid-column: span 4;
+  padding: 10px 20px;
+  border: 2px var(--border) solid;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background-color: var(--screen);
+  word-wrap: break-word;
+  word-break: break-all;
+  height: 50px;
+}
+
+.btn {
+  height: 75px;
+  border: 1px solid;
 }
 
 .delete {
