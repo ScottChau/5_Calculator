@@ -82,3 +82,11 @@ h1 {
   display: flex;
   justify-content: end;
 }
+
+.btn:hover {
+  background-color: var(--btn-hover);
+}
+
+.btn:active {
+  background-color: var(--btn-active);
+}
