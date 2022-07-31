@@ -58,20 +58,7 @@ h1 {
   height: 50px;
 }
 
-.btn {
-  height: 75px;
-  border: 1px solid;
-}
-
-.delete {
-  grid-column: span 2;
-  margin-bottom: 20px;
-}
-
-.clear {
-  grid-column: span 2;
-  margin-bottom: 20px;
-}
+/* Button */
 
 .now {
   display: flex;
@@ -83,10 +70,24 @@ h1 {
   justify-content: end;
 }
 
+.btn {
+  height: 75px;
+  border: 1px solid;
+}
 .btn:hover {
   background-color: var(--btn-hover);
 }
 
 .btn:active {
   background-color: var(--btn-active);
+}
+
+.delete {
+  grid-column: span 2;
+  margin-bottom: 20px;
+}
+
+.clear {
+  grid-column: span 2;
+  margin-bottom: 20px;
 }

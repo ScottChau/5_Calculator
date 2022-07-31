@@ -213,7 +213,7 @@ function divide_() {
 
   // prevent total / 0
   if (
-    (num2 == 0 && total != 0 && operator === multiply) ||
+    (num2 === 0 && total !== 0 && operator === multiply) ||
     operator === divide
   ) {
     num2 = 1;
@@ -228,7 +228,7 @@ function divide_() {
     previousDisplay(`${total} ÷ `);
     nowDisplay(`${total}`);
     numArray = [];
-    operator = divide;
+    return (operator = divide);
   } else if (
     operator === subtract ||
     operator === multiply ||
@@ -238,7 +238,7 @@ function divide_() {
     previousDisplay(`${total} ÷ `);
     nowDisplay(`${total}`);
     numArray = [];
-    operator = divide;
+    return (operator = divide);
   }
   //
   operator = divide;
